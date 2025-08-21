@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShadowAccount | Premium Digital Accounts</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{
+      --bg-primary:#0d1117;--bg-secondary:#161b22;--bg-card:#21262d;
+      --accent-primary:#58a6ff;--accent-secondary:#2ea043;
+      --text-primary:#f0f6fc;--text-secondary:#8b949e;
+      --danger:#f85149;--terminal:#39ff14;
+      --transition:all .3s ease;--glow:0 0 15px rgba(88,166,255,.5)
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.6;overflow-x:hidden;min-height:100vh;background-image:
+      radial-gradient(circle at 10% 20%, rgba(40,70,110,.1) 0%, transparent 20%),
+      radial-gradient(circle at 90% 80%, rgba(40,70,110,.1) 0%, transparent 20%)}
+    h1,h2,h3,.logo,.nav-link,.btn,.product-title{font-family:'Courier New',monospace;font-weight:700;letter-spacing:-.5px}
+    header{background:var(--bg-secondary);border-bottom:1px solid #30363d;padding:1rem 5%;position:sticky;top:0;z-index:100;backdrop-filter:blur(10px)}
+    .navbar{display:flex;justify-content:space-between;align-items:center}
+    .logo{font-size:1.8rem;color:var(--terminal);text-decoration:none;display:flex;align-items:center;gap:10px}
+    .logo i{color:var(--accent-primary);animation:pulse 2s infinite}
+    .nav-links{display:flex;gap:2rem}
+    .nav-link{color:var(--text-primary);text-decoration:none;font-size:1.05rem;position:relative;padding:.5rem 0;transition:var(--transition);display:flex;align-items:center;gap:.5rem;cursor:pointer}
+    .nav-link::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--terminal);transition:var(--transition)}
+    .nav-link:hover,.nav-link.active{color:var(--terminal)} .nav-link:hover::after,.nav-link.active::after{width:100%}
+    .hero{padding:8rem 5% 5rem;text-align:center;position:relative;overflow:hidden}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at center, rgba(88,166,255,.1) 0%, transparent 70%);z-index:-1}
+    .hero h1{font-size:3.2rem;margin-bottom:1rem;background:linear-gradient(45deg,var(--terminal),var(--accent-primary));-webkit-background-clip:text;background-clip:text;color:transparent;animation:textGlow 2s ease-in-out infinite alternate}
+    .hero p{font-size:1.1rem;max-width:720px;margin:0 auto 2rem;color:var(--text-secondary)}
+    .btn{display:inline-block;background:linear-gradient(45deg,var(--accent-primary),var(--accent-secondary));color:#fff;padding:.8rem 1.2rem;border-radius:8px;text-decoration:none;font-weight:700;letter-spacing:.5px;transition:var(--transition);border:none;cursor:pointer;position:relative;overflow:hidden}
+    .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);transition:.5s}
+    .btn:hover::before{left:100%} .btn:hover{transform:translateY(-3px);box-shadow:var(--glow)}
+    .btn-secondary{background:transparent;border:1px solid var(--accent-primary)}
+    .btn-checkout{width:100%;background:linear-gradient(45deg,var(--accent-secondary),var(--terminal));font-size:1.05rem;padding:1rem 1.25rem;margin-bottom:1rem}
+    .btn-checkout:disabled{background:var(--text-secondary);cursor:not-allowed;opacity:.5}
+    .terminal-effect{font-family:monospace;border-right:2px solid var(--terminal);white-space:nowrap;overflow:hidden;display:inline-block;margin-top:1rem;color:var(--terminal);font-size:1rem}
+    .section-title{text-align:center;margin:3rem 0 2rem;font-size:2.2rem;position:relative}
+    .section-title::after{content:'';display:block;width:100px;height:4px;background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary));margin:.5rem auto;border-radius:2px}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;padding:0 5% 4rem}
+    .product-card{background:var(--bg-card);border-radius:12px;overflow:hidden;transition:var(--transition);border:1px solid #30363d;position:relative;box-shadow:0 4px 6px rgba(0,0,0,.1)}
+    .product-card:hover{transform:translateY(-8px);box-shadow:var(--glow);border-color:var(--accent-primary)}
+    .product-image{height:160px;background:#0a0c10;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #30363d;overflow:hidden}
+    .product-image i{font-size:3.2rem;color:var(--text-secondary)}
+    .product-info{padding:1.25rem}
+    .product-title{font-size:1.25rem;margin-bottom:.4rem;color:var(--accent-primary)}
+    .product-description{color:var(--text-secondary);margin-bottom:.8rem;font-size:.95rem;min-height:56px}
+    .product-price{font-size:1.3rem;font-weight:800;color:var(--terminal);margin-bottom:.9rem}
+    .products-hero,.cart-hero{padding:6rem 5% 2.25rem;text-align:center;background:linear-gradient(135deg,var(--bg-secondary) 0%,var(--bg-primary) 100%)}
+    .products-hero h1,.cart-hero h1{font-size:2.4rem;margin-bottom:.8rem;color:var(--terminal)}
+    .products-hero p,.cart-hero p{font-size:1.05rem;color:var(--text-secondary)}
+    .products-container{padding:2rem 5%;display:grid;gap:2rem;max-width:1200px;margin:0 auto}
+    .product-profile{background:var(--bg-card);border-radius:14px;padding:1.6rem;border:1px solid #30363d;transition:var(--transition)}
+    .product-profile:hover{transform:translateY(-3px);box-shadow:var(--glow);border-color:var(--accent-primary)}
+    .product-header{display:flex;align-items:center;gap:1.1rem;margin-bottom:1.2rem}
+    .product-icon{width:70px;height:70px;background:var(--bg-secondary);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #30363d}
+    .product-icon i{font-size:2rem}
+    .product-icon.spotify i{color:#1DB954}.product-icon.steam i{color:#00adee}.product-icon.canva i{color:#00C4CC}.product-icon.telegram i{color:#0088cc}.product-icon.vpn i{color:#00cc66}.product-icon.netflix i{color:#e50914}
+    .product-info-header h2{font-size:1.5rem;color:var(--text-primary);margin-bottom:.2rem}
+    .product-info-header p{color:var(--text-secondary);font-size:.98rem}
+    .product-features{margin-bottom:1rem}
+    .product-features h3{color:var(--accent-primary);margin-bottom:.6rem;font-size:1.1rem}
+    .product-features ul{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.6rem}
+    .product-features li{display:flex;align-items:center;gap:.6rem;color:var(--text-secondary)}
+    .product-features li i{color:var(--terminal);font-size:.9rem}
+    .pricing-section{display:grid;grid-template-columns:1fr auto auto;gap:1rem;align-items:center;background:var(--bg-secondary);padding:1rem 1.25rem;border-radius:10px;border:1px solid #30363d}
+    .plan-selector label{display:block;margin-bottom:.35rem;color:var(--text-secondary);font-weight:700}
+    .plan-select{width:200px;padding:.7rem;background:var(--bg-primary);border:1px solid #30363d;border-radius:8px;color:var(--text-primary);cursor:pointer;transition:var(--transition);font-size:.98rem}
+    .plan-select:focus{outline:none;border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(88,166,255,.2)}
+    .price-display{text-align:center}.price{font-size:1.6rem;font-weight:800;color:var(--terminal);display:block}
+    .add-to-cart-btn{background:linear-gradient(45deg,var(--accent-secondary),var(--terminal));padding:.9rem 1.1rem;font-size:.98rem;white-space:nowrap;border-radius:8px}
+    .vpn-contact{background:var(--bg-secondary);padding:1rem;border-radius:10px;border-left:4px solid var(--accent-secondary);text-align:center}
+    .vpn-contact p{margin-bottom:.6rem;color:var(--text-secondary)}
+    .telegram-link{color:var(--accent-primary);text-decoration:none;font-weight:700;font-size:1.05rem;transition:var(--transition);display:inline-block;padding:.45rem .8rem;background:var(--bg-primary);border-radius:6px;margin:.35rem 0}
+    .telegram-link:hover{color:var(--terminal);background:var(--bg-card);transform:translateY(-2px)}
+    .cart-container{max-width:1200px;margin:0 auto;padding:2rem 5%}
+    .cart-content{display:grid;grid-template-columns:1fr 380px;gap:2rem}
+    .cart-items-section h2{color:var(--accent-primary);margin-bottom:1rem;font-size:1.4rem;display:flex;align-items:center;gap:.5rem}
+    .cart-items{display:grid;gap:1rem}
+    .cart-item{background:var(--bg-card);border-radius:10px;padding:1rem;border:1px solid #30363d;display:flex;justify-content:space-between;align-items:center;transition:var(--transition)}
+    .cart-item:hover{border-color:var(--accent-primary);box-shadow:0 4px 12px rgba(88,166,255,.1)}
+    .item-info{display:flex;align-items:center;gap:.8rem}
+    .item-icon{width:56px;height:56px;background:var(--bg-secondary);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #30363d}
+    .item-icon i{font-size:1.4rem}
+    .item-details h4{color:var(--text-primary);margin-bottom:.2rem;font-size:1.05rem}
+    .item-details p{color:var(--text-secondary);font-size:.9rem;margin-bottom:.2rem}
+    .item-price{color:var(--terminal);font-weight:800;font-size:.9rem}
+    .item-controls{display:flex;align-items:center;gap:.8rem}
+    .quantity-controls{display:flex;align-items:center;gap:.4rem;background:var(--bg-secondary);border-radius:6px;padding:.25rem}
+    .quantity-btn{background:var(--accent-primary);color:white;border:none;border-radius:6px;width:30px;height:30px;cursor:pointer;font-weight:800;transition:var(--transition);font-size:14px}
+    .quantity-btn:hover{background:var(--terminal);color:#000}
+    .quantity{color:var(--text-primary);font-weight:800;min-width:30px;text-align:center}
+    .item-total{color:var(--terminal);font-weight:800;font-size:1rem;min-width:80px;text-align:center}
+    .remove-btn{background:var(--danger);color:white;border:none;border-radius:8px;padding:.45rem .55rem;cursor:pointer;transition:var(--transition)}
+    .remove-btn:hover{background:#d73a49;transform:scale(1.05)}
+    .empty-cart{text-align:center;padding:3rem 1rem;color:var(--text-secondary)}
+    .empty-cart-icon{font-size:4rem;margin-bottom:.8rem;opacity:.5}
+    .cart-summary-section{position:sticky;top:110px;height:fit-content}
+    .cart-summary{background:var(--bg-card);border-radius:14px;padding:1.4rem;border:1px solid #30363d}
+    .cart-summary h3{color:var(--accent-primary);margin-bottom:1rem;font-size:1.2rem;display:flex;align-items:center;gap:.5rem}
+    .summary-line{display:flex;justify-content:space-between;margin-bottom:.6rem;color:var(--text-secondary)}
+    .total-line{border-top:1px solid #30363d;padding-top:.8rem;font-weight:800;color:var(--text-primary);font-size:1.05rem}
+    .total-line span:last-child{color:var(--terminal)}
+    .security-info{display:flex;align-items:center;gap:.5rem;color:var(--text-secondary);font-size:.9rem;margin-top:.6rem;justify-content:center}
+    .security-info i{color:var(--accent-secondary)}
+    .checkout-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:1000;padding:1.5rem}
+    .checkout-modal .modal-content{background:var(--bg-card);border-radius:14px;padding:0;max-width:640px;width:100%;max-height:90vh;overflow-y:auto;border:1px solid #30363d;animation:modalSlideIn .3s ease}
+    .modal-header{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 1.2rem;border-bottom:1px solid #30363d}
+    .modal-header h3{color:var(--accent-primary);margin:0;font-size:1.2rem;display:flex;align-items:center;gap:.5rem}
+    .modal-close{background:none;border:none;color:var(--text-secondary);font-size:1.5rem;cursor:pointer;transition:var(--transition);padding:.3rem}
+    .modal-close:hover{color:var(--danger)}
+    .checkout-form{padding:1.2rem}
+    .form-section{margin-bottom:1rem}
+    .form-section h4{color:var(--text-primary);margin-bottom:.6rem;font-size:1.02rem}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+    .form-group{margin-bottom:.6rem}
+    .form-group label{display:block;color:var(--text-primary);margin-bottom:.35rem;font-weight:700}
+    .form-group input,.form-group select{width:100%;padding:.7rem;background:var(--bg-primary);border:1px solid #30363d;border-radius:8px;color:var(--text-primary);font-size:.95rem;transition:var(--transition)}
+    .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--accent-primary);box-shadow:0 0 0 3px rgba(88,166,255,.2)}
+    .form-group small{color:var(--text-secondary);font-size:.8rem;margin-top:.25rem;display:block}
+    .order-review{background:var(--bg-secondary);border-radius:8px;padding:.75rem;margin-bottom:.6rem}
+    .review-item{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid #30363d}
+    .review-item:last-child{border-bottom:none}
+    .review-item-info{display:flex;flex-direction:column;gap:.15rem}
+    .review-item-name{color:var(--text-primary);font-weight:800}
+    .review-item-qty{color:var(--text-secondary);font-size:.9rem}
+    .review-item-price{color:var(--terminal);font-weight:800}
+    .order-total{text-align:center;padding:.7rem;background:var(--bg-primary);border-radius:8px;font-size:1.02rem;color:var(--text-primary)}
+    .order-total strong{color:var(--terminal)}
+    .form-actions{display:flex;gap:.8rem;justify-content:flex-end;margin-top:1rem}
+    .btn-primary{background:linear-gradient(45deg,var(--accent-primary),var(--terminal));padding:.75rem 1.1rem;border-radius:8px}
+    footer{background:var(--bg-secondary);padding:2rem 5% 1.4rem;border-top:1px solid #30363d;margin-top:3rem}
+    .footer-content{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem;margin-bottom:1.2rem}
+    .footer-column h3{font-size:1.1rem;margin-bottom:1rem;color:var(--accent-primary);position:relative;padding-bottom:.4rem}
+    .footer-column h3::after{content:'';position:absolute;bottom:0;left:0;width:50px;height:2px;background:var(--terminal)}
+    .footer-links{list-style:none}.footer-links li{margin-bottom:.6rem}
+    .footer-links a{color:var(--text-secondary);text-decoration:none;transition:var(--transition);display:flex;align-items:center;gap:8px}
+    .footer-links a:hover{color:var(--accent-primary)}
+    .footer-links a i{width:20px;text-align:center}
+    .social-links{display:flex;gap:.8rem;margin-top:.6rem}
+    .social-link{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--bg-card);border-radius:50%;color:var(--text-primary);transition:var(--transition);text-decoration:none}
+    .social-link:hover{background:var(--accent-primary);transform:translateY(-4px)}
+    .copyright{text-align:center;padding-top:1rem;border-top:1px solid #30363d;color:var(--text-secondary);font-size:.9rem}
+    .notification{position:fixed;top:90px;right:2rem;background:var(--accent-secondary);color:#fff;padding:.8rem 1rem;border-radius:10px;box-shadow:0 4px 12px rgba(0,0,0,.3);z-index:1000;display:flex;align-items:center;gap:.5rem;animation:slideInRight .3s ease;font-weight:800;max-width:320px}
+    .notification.error{background:var(--danger)} .notification.success{background:var(--accent-secondary)}
+    .hidden{display:none!important}.show-page{display:block!important}
+    @keyframes pulse{0%{opacity:.8}50%{opacity:1}100%{opacity:.8}}
+    @keyframes textGlow{0%{text-shadow:0 0 5px rgba(88,166,255,.5)}100%{text-shadow:0 0 20px rgba(88,166,255,.8),0 0 30px rgba(88,166,255,.6)}}
+    @keyframes modalSlideIn{from{transform:translateY(-50px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+    @keyframes fadeOut{from{opacity:1}to{opacity:0}}
+    @media (max-width:768px){
+      .navbar{flex-direction:column;gap:1rem}.nav-links{gap:1rem;flex-wrap:wrap;justify-content:center}
+      .hero h1,.products-hero h1,.cart-hero h1{font-size:2.2rem}
+      .btn{display:block;width:100%;margin-bottom:.8rem}.btn-secondary{margin-left:0}
+      .products-grid{grid-template-columns:1fr}.product-header{flex-direction:column;text-align:center}
+      .pricing-section{grid-template-columns:1fr;text-align:center}.plan-select{width:100%;margin-bottom:.6rem}
+      .cart-content{grid-template-columns:1fr;gap:1.2rem}.cart-summary-section{position:static}
+      .cart-item{flex-direction:column;gap:.8rem;text-align:center}.item-controls{justify-content:center;flex-wrap:wrap}
+      .form-row{grid-template-columns:1fr}.checkout-modal{padding:1rem}.checkout-modal .modal-content{max-height:95vh}.form-actions{flex-direction:column}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <a href="#" class="logo" onclick="App.navigation.showPage('home')">
+        <i class="fas fa-user-secret"></i> ShadowAccount
+      </a>
+      <div class="nav-links">
+        <a href="#" class="nav-link" data-page="home" onclick="App.navigation.showPage('home')">Home</a>
+        <a href="#" class="nav-link" data-page="products" onclick="App.navigation.showPage('products')">Products</a>
+        <a href="#" class="nav-link" data-page="about" onclick="App.navigation.showPage('about')">About</a>
+        <a href="#" class="nav-link" data-page="cart" onclick="App.navigation.showPage('cart')">
+          <i class="fas fa-shopping-cart"></i> Cart (<span id="cart-count">0</span>)
+        </a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HOME PAGE -->
+  <div id="home-page" class="page-content show-page">
+    <section class="hero">
+      <h1>PREMIUM DIGITAL ACCOUNTS</h1>
+      <p>Access premium services at the best prices. Spotify, Steam, Canva, Telegram Premium and VPN with instant delivery and 24/7 support.</p>
+      <div>
+        <a href="#" class="btn" onclick="App.navigation.showPage('products')">Explore Products</a>
+        <a href="#" class="btn btn-secondary" onclick="App.navigation.showPage('about')">Learn More</a>
+      </div>
+      <div class="terminal-effect">Secure. Reliable. Instant Delivery.</div>
+    </section>
+
+    <h2 class="section-title">Featured Products</h2>
+    <div class="products-grid">
+      <div class="product-card">
+        <div class="product-image"><i class="fab fa-spotify" style="color:#1DB954"></i></div>
+        <div class="product-info">
+          <h3 class="product-title">Spotify Premium</h3>
+          <p class="product-description">Ad-free music, offline listening, and unlimited skips.</p>
+          <div class="product-price">$4.99</div>
+          <a href="#" class="btn" onclick="App.navigation.showPage('products')">View Details</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image"><i class="fab fa-steam" style="color:#00adee"></i></div>
+        <div class="product-info">
+          <h3 class="product-title">Steam Wallet</h3>
+          <p class="product-description">Top up your Steam wallet with any amount instantly.</p>
+          <div class="product-price">$10.00</div>
+          <a href="#" class="btn" onclick="App.navigation.showPage('products')">View Details</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image"><i class="fab fa-canva" style="color:#00C4CC"></i></div>
+        <div class="product-info">
+          <h3 class="product-title">Canva Pro</h3>
+          <p class="product-description">Unlock premium templates, photos, and design tools.</p>
+          <div class="product-price">$6.99</div>
+          <a href="#" class="btn" onclick="App.navigation.showPage('products')">View Details</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image"><i class="fab fa-telegram" style="color:#0088cc"></i></div>
+        <div class="product-info">
+          <h3 class="product-title">Telegram Premium</h3>
+          <p class="product-description">Enhanced features, larger uploads, and exclusive stickers.</p>
+          <div class="product-price">$5.99</div>
+          <a href="#" class="btn" onclick="App.navigation.showPage('products')">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCTS PAGE -->
+  <div id="products-page" class="page-content hidden">
+    <section class="products-hero">
+      <h1>All Products</h1>
+      <p>Choose from our wide selection of premium digital services</p>
+    </section>
+
+    <div class="products-container">
+      <!-- Spotify -->
+      <div class="product-profile">
+        <div class="product-header">
+          <div class="product-icon spotify"><i class="fab fa-spotify"></i></div>
+          <div class="product-info-header">
+            <h2>Spotify Premium</h2><p>Stream music ad-free with unlimited skips</p>
+          </div>
+        </div>
+        <div class="product-features">
+          <h3>Features:</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> No ads interruption</li>
+            <li><i class="fas fa-check"></i> Offline downloads</li>
+            <li><i class="fas fa-check"></i> Unlimited skips</li>
+            <li><i class="fas fa-check"></i> High quality audio</li>
+          </ul>
+        </div>
+        <div class="pricing-section">
+          <div class="plan-selector">
+            <label for="spotify-plan">Select Duration:</label>
+            <select id="spotify-plan" class="plan-select" data-product="spotify">
+              <option value="1" data-price="4.99">1 Month</option>
+              <option value="3" data-price="12.99">3 Months</option>
+              <option value="6" data-price="22.99">6 Months</option>
+              <option value="12" data-price="39.99">12 Months</option>
+            </select>
+          </div>
+          <div class="price-display"><span class="price" id="spotify-price">$4.99</span></div>
+          <button class="btn add-to-cart-btn" data-product="spotify">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Steam -->
+      <div class="product-profile">
+        <div class="product-header">
+          <div class="product-icon steam"><i class="fab fa-steam"></i></div>
+          <div class="product-info-header">
+            <h2>Steam Wallet Codes</h2><p>Add funds to your Steam wallet instantly</p>
+          </div>
+        </div>
+        <div class="product-features">
+          <h3>Features:</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Instant code delivery</li>
+            <li><i class="fas fa-check"></i> Global activation</li>
+            <li><i class="fas fa-check"></i> Multiple denominations</li>
+            <li><i class="fas fa-check"></i> No expiration date</li>
+          </ul>
+        </div>
+        <div class="pricing-section">
+          <div class="plan-selector">
+            <label for="steam-plan">Select Amount:</label>
+            <select id="steam-plan" class="plan-select" data-product="steam">
+              <option value="10" data-price="10.00">$10 Code</option>
+              <option value="25" data-price="25.00">$25 Code</option>
+              <option value="50" data-price="50.00">$50 Code</option>
+              <option value="100" data-price="100.00">$100 Code</option>
+            </select>
+          </div>
+          <div class="price-display"><span class="price" id="steam-price">$10.00</span></div>
+          <button class="btn add-to-cart-btn" data-product="steam">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Canva -->
+      <div class="product-profile">
+        <div class="product-header">
+          <div class="product-icon canva"><i class="fab fa-canva"></i></div>
+          <div class="product-info-header">
+            <h2>Canva Pro</h2><p>Professional design tools and premium content</p>
+          </div>
+        </div>
+        <div class="product-features">
+          <h3>Features:</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Premium templates</li>
+            <li><i class="fas fa-check"></i> Background remover</li>
+            <li><i class="fas fa-check"></i> Brand kit access</li>
+            <li><i class="fas fa-check"></i> Unlimited storage</li>
+          </ul>
+        </div>
+        <div class="pricing-section">
+          <div class="plan-selector">
+            <label for="canva-plan">Select Duration:</label>
+            <select id="canva-plan" class="plan-select" data-product="canva">
+              <option value="1" data-price="6.99">1 Month</option>
+              <option value="3" data-price="18.99">3 Months</option>
+              <option value="6" data-price="34.99">6 Months</option>
+              <option value="12" data-price="59.99">12 Months</option>
+            </select>
+          </div>
+          <div class="price-display"><span class="price" id="canva-price">$6.99</span></div>
+          <button class="btn add-to-cart-btn" data-product="canva">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Telegram -->
+      <div class="product-profile">
+        <div class="product-header">
+          <div class="product-icon telegram"><i class="fab fa-telegram"></i></div>
+          <div class="product-info-header">
+            <h2>Telegram Premium</h2><p>Enhanced messaging with premium features</p>
+          </div>
+        </div>
+        <div class="product-features">
+          <h3>Features:</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Larger file uploads (4GB)</li>
+            <li><i class="fas fa-check"></i> Exclusive stickers</li>
+            <li><i class="fas fa-check"></i> Advanced chat management</li>
+            <li><i class="fas fa-check"></i> Premium badges</li>
+          </ul>
+        </div>
+        <div class="pricing-section">
+          <div class="plan-selector">
+            <label for="telegram-plan">Select Duration:</label>
+            <select id="telegram-plan" class="plan-select" data-product="telegram">
+              <option value="1" data-price="5.99">1 Month</option>
+              <option value="3" data-price="16.99">3 Months</option>
+              <option value="6" data-price="31.99">6 Months</option>
+              <option value="12" data-price="57.99">12 Months</option>
+            </select>
+          </div>
+          <div class="price-display"><span class="price" id="telegram-price">$5.99</span></div>
+          <button class="btn add-to-cart-btn" data-product="telegram">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Netflix -->
+      <div class="product-profile">
+        <div class="product-header">
+          <div class="product-icon netflix"><i class="fas fa-film"></i></div>
+          <div class="product-info-header">
+            <h2>Netflix Premium</h2><p>Stream unlimited movies and TV shows</p>
+          </div>
+        </div>
+        <div class="product-features">
+          <h3>Features:</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> 4K Ultra HD streaming</li>
+            <li><i class="fas fa-check"></i> Multiple screens</li>
+            <li><i class="fas fa-check"></i> Original content</li>
+            <li><i class="fas fa-check"></i> Offline downloads</li>
+          </ul>
+        </div>
+        <div class="pricing-section">
+          <div class="plan-selector">
+            <label for="netflix-plan">Select Duration:</label>
+            <select id="netflix-plan" class="plan-select" data-product="netflix">
+              <option value="1" data-price="8.99">1 Month</option>
+              <option value="3" data-price="24.99">3 Months</option>
+              <option value="6" data-price="47.99">6 Months</option>
+              <option value="12" data-price="89.99">12 Months</option>
+            </select>
+          </div>
+          <div class="price-display"><span class="price" id="netflix-price">$8.99</span></div>
+          <button class="btn add-to-cart-btn" data-product="netflix">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- VPN (contact) -->
+      <div class="product-profile">
+        <div class="product-header">
+          <div class="product-icon vpn"><i class="fas fa-shield-alt"></i></div>
+          <div class="product-info-header">
+            <h2>VPN Service</h2><p>Secure browsing and global content access</p>
+          </div>
+        </div>
+        <div class="product-features">
+          <h3>Features:</h3>
+          <ul>
+            <li><i class="fas fa-check"></i> Global server network</li>
+            <li><i class="fas fa-check"></i> No logging policy</li>
+            <li><i class="fas fa-check"></i> Multiple device support</li>
+            <li><i class="fas fa-check"></i> 24/7 support</li>
+          </ul>
+        </div>
+        <div class="vpn-contact">
+          <p><i class="fab fa-telegram"></i> For VPN subscriptions, contact us on Telegram:</p>
+          <a href="https://t.me/kmyiii" class="telegram-link">@shadowaccount</a>
+          <p>We'll provide custom pricing based on your needs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT PAGE -->
+  <div id="about-page" class="page-content hidden">
+    <section class="cart-hero">
+      <h1>About ShadowAccount</h1>
+      <p>Your trusted partner in premium digital services</p>
+    </section>
+    <div class="cart-container">
+      <div style="background:var(--bg-card);border-radius:14px;padding:1.4rem;border:1px solid #30363d">
+        <h2 style="color:var(--accent-primary);margin-bottom:1rem">Who We Are</h2>
+        <p style="margin-bottom:1rem;color:var(--text-secondary);line-height:1.8">
+          ShadowAccount has been a leading provider of premium digital accounts since 2020. We specialize in delivering high-quality, authentic premium subscriptions at competitive prices with instant delivery and reliable customer support.
+        </p>
+        <p style="color:var(--text-secondary);line-height:1.8">
+          Our mission is to make premium digital services accessible to everyone while maintaining the highest standards of security and customer satisfaction. We work with a global network of trusted suppliers to ensure our customers receive legitimate, working accounts every time.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART PAGE -->
+  <div id="cart-page" class="page-content hidden">
+    <section class="cart-hero">
+      <h1>Shopping Cart</h1>
+      <p>Review your selected items and proceed to checkout</p>
+    </section>
+    <div class="cart-container">
+      <div class="cart-content">
+        <div class="cart-items-section">
+          <h2><i class="fas fa-shopping-bag"></i> Your Items</h2>
+          <div id="cart-items" class="cart-items"></div>
+          <div id="empty-cart" class="empty-cart" style="display:none">
+            <div class="empty-cart-icon"><i class="fas fa-shopping-cart"></i></div>
+            <h3>Your cart is empty</h3>
+            <p>Add some awesome products to get started!</p>
+            <a href="#" class="btn" onclick="App.navigation.showPage('products')">Browse Products</a>
+          </div>
+        </div>
+        <div class="cart-summary-section">
+          <div class="cart-summary">
+            <h3><i class="fas fa-calculator"></i> Order Summary</h3>
+            <div class="summary-line">
+              <span>Items (<span id="total-items">0</span>):</span>
+              <span id="subtotal">$0.00</span>
+            </div>
+            <div class="summary-line">
+              <span>Processing Fee:</span>
+              <span id="processing-fee">$0.00</span>
+            </div>
+            <div class="summary-line total-line">
+              <span>Total:</span>
+              <span id="total-amount">$0.00</span>
+            </div>
+            <button id="checkout-btn" class="btn btn-checkout" disabled>
+              <i class="fas fa-credit-card"></i> Finalize Your Purchase
+            </button>
+            <div class="security-info">
+              <i class="fas fa-shield-alt"></i><span>Secure checkout via Telegram</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="checkout-modal hidden" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+      <div class="modal-header">
+        <h3 id="checkout-title"><i class="fas fa-user-edit"></i> Customer Information</h3>
+        <button class="modal-close" onclick="App.checkout.closeModal()" aria-label="Close">&times;</button>
+      </div>
+      <form id="checkout-form" class="checkout-form">
+        <div class="form-section">
+          <h4>Personal Information</h4>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="first-name">First Name *</label>
+              <input type="text" id="first-name" name="firstName" required/>
+            </div>
+            <div class="form-group">
+              <label for="last-name">Last Name *</label>
+              <input type="text" id="last-name" name="lastName" required/>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Contact Method</h4>
+          <div class="form-group">
+            <label for="contact-method">Preferred Contact Method *</label>
+            <select id="contact-method" name="contactMethod" required onchange="App.checkout.toggleContactField()">
+              <option value="">Select contact method</option>
+              <option value="email">Email Address</option>
+              <option value="telegram">Telegram ID</option>
+            </select>
+          </div>
+          <div class="form-group hidden" id="email-field">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" name="email"/>
+            <small>We'll send order confirmation to this email</small>
+          </div>
+          <div class="form-group hidden" id="telegram-field">
+            <label for="telegram-id">Telegram ID *</label>
+            <input type="text" id="telegram-id" name="telegramId" placeholder="@username or phone number"/>
+            <small>Your Telegram username (e.g., @johndoe) or phone number</small>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h4>Order Summary</h4>
+          <div class="order-review" id="order-review"></div>
+          <div class="order-total">Total Amount: <strong id="modal-total">$0.00</strong></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" onclick="App.checkout.closeModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary"><i class="fab fa-telegram"></i> Complete Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer id="contact">
+    <div class="footer-content">
+      <div class="footer-column">
+        <h3>ShadowAccount</h3>
+        <p>Your trusted source for premium digital accounts since 2020.</p>
+        <div class="social-links">
+          <a href="https://t.me/shadowaccount" class="social-link"><i class="fab fa-telegram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-discord"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="#" onclick="App.navigation.showPage('home')"><i class="fas fa-chevron-right"></i> Home</a></li>
+          <li><a href="#" onclick="App.navigation.showPage('products')"><i class="fas fa-chevron-right"></i> Products</a></li>
+          <li><a href="#" onclick="App.navigation.showPage('about')"><i class="fas fa-chevron-right"></i> About Us</a></li>
+          <li><a href="#" onclick="App.navigation.showPage('cart')"><i class="fas fa-chevron-right"></i> Cart</a></li>
+          <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Support</h3>
+        <ul class="footer-links">
+          <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
+          <li><a href="#"><i class="fas fa-shipping-fast"></i> Delivery Policy</a></li>
+          <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+          <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3>Contact Us</h3>
+        <ul class="footer-links">
+          <li><a href="https://t.me/shadowaccount"><i class="fab fa-telegram"></i> Telegram: @shadowaccount</a></li>
+          <li><a href="mailto:support@shadowaccount.com"><i class="fas fa-envelope"></i> support@shadowaccount.com</a></li>
+          <li><a href="#"><i class="fas fa-globe"></i> shadowaccount.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; <span id="year"></span> ShadowAccount. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    'use strict';
+
+    const App = (function(){
+      // --- Product configuration ---
+      const PRODUCT_DATA = {
+        spotify:{name:'Spotify Premium',icon:'fab fa-spotify',color:'#1DB954',durationType:'months'},
+        steam:{name:'Steam Wallet Code',icon:'fab fa-steam',color:'#00adee',durationType:'amount'},
+        canva:{name:'Canva Pro',icon:'fab fa-canva',color:'#00C4CC',durationType:'months'},
+        telegram:{name:'Telegram Premium',icon:'fab fa-telegram',color:'#0088cc',durationType:'months'},
+        netflix:{name:'Netflix Premium',icon:'fas fa-film',color:'#e50914',durationType:'months'}
+      };
+
+      // --- Utilities ---
+      const utils = {
+        notify(message,type='success'){
+          document.querySelectorAll('.notification').forEach(n=>n.remove());
+          const el=document.createElement('div');
+          el.className = 'notification ' + (type==='error'?'error':'success');
+          el.innerHTML = '<i class="fas fa-'+(type==='success'?'check-circle':type==='error'?'exclamation-circle':'info-circle')+'"></i><span>'+message+'</span>';
+          document.body.appendChild(el);
+          setTimeout(()=>{ el.style.animation='fadeOut .3s ease forwards'; setTimeout(()=>el.remove(), 300); },2200);
+        },
+        $(id){ return document.getElementById(id); },
+        formatCurrency(amount){ return '$' + (Number(amount)||0).toFixed(2); },
+        durationText(product, duration){
+          return product.durationType==='months' ? (duration + ' Month' + (parseInt(duration)>1?'s':'')) : (duration + ' Code');
+        },
+        setText(id, text){ const el=this.$(id); if(el) el.textContent=text; }
+      };
+
+      // --- Shopping Cart (single source of truth) ---
+      class ShoppingCart{
+        constructor(){
+          this.items = window.cartData || [];
+          this.listeners = [];
+        }
+        addListener(cb){ this.listeners.push(cb); cb(this.items); }
+        notify(){ this.listeners.forEach(cb=>{ try{ cb(this.items); }catch(e){ console.error(e); } }); }
+        save(){ window.cartData = [...this.items]; this.notify(); }
+        add(productId, duration, price){
+          const i = this.items.findIndex(it=>it.productId===productId && String(it.duration)===String(duration));
+          if(i>=0){ this.items[i].quantity++; } else {
+            this.items.push({ id: Date.now()+Math.random(), productId, duration:String(duration), price:parseFloat(price), quantity:1 });
+          }
+          this.save();
+        }
+        remove(id){ this.items = this.items.filter(it=>it.id!=id); this.save(); }
+        setQty(id, qty){
+          const item=this.items.find(it=>it.id==id); if(!item) return;
+          const q=parseInt(qty);
+          if(q<1){ this.remove(id); } else { item.quantity=q; this.save(); }
+        }
+        totalItems(){ return this.items.reduce((t,i)=>t+i.quantity,0); }
+        subtotal(){ return this.items.reduce((t,i)=>t+i.price*i.quantity,0); }
+        clear(){ this.items=[]; this.save(); }
+        snapshot(){ return [...this.items]; }
+      }
+
+      const cart = new ShoppingCart();
+      let currentPage = 'home';
+
+      // --- Navigation ---
+      const navigation = {
+        showPage(pageId){
+          document.querySelectorAll('.page-content').forEach(p=>{ p.classList.add('hidden'); p.classList.remove('show-page'); });
+          const target = document.getElementById(pageId+'-page');
+          if(target){ target.classList.remove('hidden'); target.classList.add('show-page'); }
+          document.querySelectorAll('.nav-link').forEach(a=>{ a.classList.toggle('active', a.dataset.page===pageId); });
+          currentPage = pageId;
+          if(pageId==='cart') cartUI.render();
+        }
+      };
+
+      // --- Products page logic (idempotent init) ---
+      const products = {
+        _initialized:false,
+        init(){
+          if(this._initialized) return;
+          this._initialized = true;
+
+          // Bind select change for price preview
+          document.querySelectorAll('.plan-select').forEach(sel=>{
+            sel.addEventListener('change', ()=> products.updatePriceDisplay(sel));
+            products.updatePriceDisplay(sel);
+          });
+          // Add-to-cart
+          document.querySelectorAll('.add-to-cart-btn').forEach(btn=>{
+            btn.addEventListener('click', ()=> products.addToCart(btn));
+          });
+        },
+        updatePriceDisplay(selectEl){
+          const product=selectEl.dataset.product;
+          const opt=selectEl.options[selectEl.selectedIndex];
+          const price=parseFloat(opt.dataset.price);
+          const priceEl=document.getElementById(product+'-price');
+          if(priceEl && !isNaN(price)){
+            priceEl.textContent = utils.formatCurrency(price);
+            priceEl.style.transition='all .25s ease'; priceEl.style.transform='scale(1.05)';
+            setTimeout(()=>{ priceEl.style.transform='scale(1)'; },200);
+          }
+        },
+        addToCart(btn){
+          const productId = btn.dataset.product;
+          const select = document.getElementById(productId+'-plan');
+          if(!select){ utils.notify('Option not found','error'); return; }
+          const opt=select.options[select.selectedIndex];
+          const duration=select.value; const price=parseFloat(opt.dataset.price);
+          if(!duration || isNaN(price)){ utils.notify('Please select a valid option','error'); return; }
+          cart.add(productId, duration, price);
+          // button feedback
+          const original = btn.innerHTML;
+          btn.disabled=true; btn.innerHTML='<i class="fas fa-check"></i> Added!';
+          setTimeout(()=>{ btn.innerHTML=original; btn.disabled=false; },900);
+          utils.notify('Item added to cart','success');
+        }
+      };
+
+      // --- Cart UI (driven by cart listener) ---
+      const cartUI = {
+        render(){
+          const items = cart.snapshot();
+          const container = utils.$('cart-items');
+          const empty = utils.$('empty-cart');
+          const checkoutBtn = utils.$('checkout-btn');
+
+          if(items.length===0){
+            if(container){ container.innerHTML=''; container.style.display='none'; }
+            if(empty) empty.style.display='block';
+            if(checkoutBtn) checkoutBtn.disabled=true;
+          } else {
+            if(container){
+              container.style.display='grid';
+              if(empty) empty.style.display='none';
+              if(checkoutBtn) checkoutBtn.disabled=false;
+              container.innerHTML = items.map(cartUI.itemTemplate).join('');
+            }
+          }
+          cartUI.updateSummary();
+        },
+        itemTemplate(item){
+          const product = PRODUCT_DATA[item.productId];
+          return `<div class="cart-item" data-item-id="${item.id}">
+            <div class="item-info">
+              <div class="item-icon"><i class="${product.icon}" style="color:${product.color}"></i></div>
+              <div class="item-details">
+                <h4>${product.name}</h4>
+                <p>${utils.durationText(product,item.duration)}</p>
+                <span class="item-price">${utils.formatCurrency(item.price)} each</span>
+              </div>
+            </div>
+            <div class="item-controls">
+              <div class="quantity-controls">
+                <button class="quantity-btn" onclick="App.cart.setQty('${item.id}', ${item.quantity-1})">-</button>
+                <span class="quantity">${item.quantity}</span>
+                <button class="quantity-btn" onclick="App.cart.setQty('${item.id}', ${item.quantity+1})">+</button>
+              </div>
+              <div class="item-total">${utils.formatCurrency(item.price*item.quantity)}</div>
+              <button class="remove-btn" onclick="App.cart.remove('${item.id}')"><i class="fas fa-trash"></i></button>
+            </div>
+          </div>`;
+        },
+        updateSummary(){
+          const sub = cart.subtotal();
+          const items = cart.totalItems();
+          const fee = sub>0 ? Math.max(0.99, sub*0.03) : 0;
+          const total = sub + fee;
+          utils.setText('total-items', items);
+          utils.setText('subtotal', utils.formatCurrency(sub));
+          utils.setText('processing-fee', utils.formatCurrency(fee));
+          utils.setText('total-amount', utils.formatCurrency(total));
+        }
+      };
+
+      // --- Checkout ---
+      const checkout = {
+        open(){
+          const modal=utils.$('checkout-modal');
+          const review=utils.$('order-review'); const modalTotal=utils.$('modal-total');
+          if(!modal||!review||!modalTotal){ console.error('Modal elements missing'); return; }
+          const items = cart.snapshot();
+          review.innerHTML = items.map(checkout.reviewItem).join('');
+          const sub = cart.subtotal(); const fee = Math.max(0.99, sub*0.03); const total = sub + fee;
+          modalTotal.textContent = utils.formatCurrency(total);
+          modal.classList.remove('hidden'); document.body.style.overflow='hidden';
+          checkout.initForm();
+        },
+        reviewItem(item){
+          const p=PRODUCT_DATA[item.productId];
+          return `<div class="review-item">
+            <div class="review-item-info">
+              <span class="review-item-name">${p.name} - ${utils.durationText(p,item.duration)}</span>
+              <span class="review-item-qty">Qty: ${item.quantity}</span>
+            </div>
+            <span class="review-item-price">${utils.formatCurrency(item.price*item.quantity)}</span>
+          </div>`;
+        },
+        closeModal(){ const m=utils.$('checkout-modal'); if(m) m.classList.add('hidden'); document.body.style.overflow=''; const f=utils.$('checkout-form'); if(f) f.reset(); checkout.toggleContactField(); },
+        toggleContactField(){
+          const method=utils.$('contact-method'); const emailField=utils.$('email-field'); const tgField=utils.$('telegram-field');
+          const email=utils.$('email'); const tg=utils.$('telegram-id');
+          if(!method||!emailField||!tgField) return;
+          emailField.classList.add('hidden'); tgField.classList.add('hidden');
+          if(email) email.required=false; if(tg) tg.required=false;
+          if(method.value==='email'){ emailField.classList.remove('hidden'); if(email) email.required=true; }
+          else if(method.value==='telegram'){ tgField.classList.remove('hidden'); if(tg) tg.required=true; }
+        },
+        initForm(){
+          const form=utils.$('checkout-form'); if(!form) return;
+          const clone=form.cloneNode(true); form.parentNode.replaceChild(clone, form);
+          clone.addEventListener('submit', e=>{ e.preventDefault(); checkout.submit(clone); });
+        },
+        submit(form){
+          const formData=new FormData(form); const customer=Object.fromEntries(formData.entries());
+          const items = cart.snapshot().map(it=>({ 
+            product: PRODUCT_DATA[it.productId].name, duration: it.duration, durationType: PRODUCT_DATA[it.productId].durationType,
+            quantity: it.quantity, price: it.price, total: it.price*it.quantity
+          }));
+          const sub = cart.subtotal(); const fee = Math.max(0.99, sub*0.03); const total = sub+fee;
+          const order = { customer, items, summary:{subtotal:sub, processingFee:fee, total }, orderDate:new Date().toISOString(), id:Date.now() };
+
+          let msg = '🛒 NEW ORDER - ShadowAccount%0A%0A';
+          msg += '👤 CUSTOMER INFO:%0A';
+          msg += 'Name: ' + encodeURIComponent((customer.firstName||'')+' '+(customer.lastName||'')) + '%0A';
+          if(customer.contactMethod==='email'){ msg+='Email: ' + encodeURIComponent(customer.email||'') + '%0A%0A'; }
+          else { msg+='Telegram: ' + encodeURIComponent(customer.telegramId||'') + '%0A%0A'; }
+          msg += '📋 ORDER ITEMS:%0A';
+          items.forEach((it,idx)=>{
+            const dur = it.durationType==='months' ? (it.duration+' month'+(parseInt(it.duration)>1?'s':'')) : (it.duration+' code');
+            msg += (idx+1)+'. '+encodeURIComponent(it.product)+'%0A';
+            msg += '   Duration: ' + encodeURIComponent(dur) + '%0A';
+            msg += '   Quantity: ' + encodeURIComponent(it.quantity) + '%0A';
+            msg += '   Price: ' + encodeURIComponent(it.price.toFixed(2)) + ' each%0A';
+            msg += '   Total: ' + encodeURIComponent(it.total.toFixed(2)) + '%0A%0A';
+          });
+          msg += '💰 ORDER SUMMARY:%0A';
+          msg += 'Subtotal: ' + encodeURIComponent(sub.toFixed(2)) + '%0A';
+          msg += 'Processing Fee: ' + encodeURIComponent(fee.toFixed(2)) + '%0A';
+          msg += 'TOTAL: ' + encodeURIComponent(total.toFixed(2)) + '%0A%0A';
+          msg += '📅 Order Date: ' + encodeURIComponent(new Date(order.orderDate).toLocaleString()) + '%0A';
+          msg += '🆔 Order ID: ' + encodeURIComponent(order.id) + '%0A%0A';
+          msg += 'Please confirm this order and provide payment instructions. Thank you!';
+
+          const url = 'https://t.me/shadowaccount?text=' + msg;
+          utils.notify('Order submitted! Redirecting to Telegram...', 'success');
+          setTimeout(()=>{
+            window.open(url, '_blank');
+            checkout.closeModal();
+            cart.clear();
+            navigation.showPage('home');
+          }, 900);
+        }
+      };
+
+      // --- Expose minimal API for inline handlers ---
+      const api = {
+        navigation,
+        checkout:{
+          openModal:()=>checkout.open(),
+          closeModal:()=>checkout.closeModal(),
+          toggleContactField:()=>checkout.toggleContactField()
+        },
+        cart:{
+          setQty:(id,qty)=>cart.setQty(id,qty),
+          remove:(id)=>{ cart.remove(id); utils.notify('Item removed from cart','success'); }
+        }
+      };
+
+      // --- Global listeners ---
+      function init(){
+        // Cart changes always update cart count; if on cart page, render UI
+        cart.addListener(()=>{
+          const countEl=document.getElementById('cart-count');
+          if(countEl) countEl.textContent = cart.totalItems();
+          if(currentPage==='cart') cartUI.render();
+        });
+
+        // Products init (idempotent)
+        products.init();
+
+        // Checkout button
+        const checkoutBtn=document.getElementById('checkout-btn');
+        if(checkoutBtn){ checkoutBtn.addEventListener('click', ()=> checkout.open()); }
+
+        // Terminal effect
+        const term=document.querySelector('.terminal-effect');
+        if(term){
+          const full=term.textContent; term.textContent='';
+          let i=0;
+          const type=()=>{
+            if(i<full.length){ term.textContent += full.charAt(i++); setTimeout(type, 90); }
+            else { setTimeout(()=>{ term.textContent=''; i=0; type(); }, 2200); }
+          };
+          type();
+        }
+
+        // Footer year
+        const y=document.getElementById('year'); if(y) y.textContent = new Date().getFullYear();
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+
+      return api;
+    })();
+  </script>
+</body>
+</html>
